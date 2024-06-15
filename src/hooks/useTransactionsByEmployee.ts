@@ -16,7 +16,9 @@ export function useTransactionsByEmployee(): TransactionsByEmployeeResult {
         }
       )
 
-      setTransactionsByEmployee(data)
+      setTransactionsByEmployee((previousTransactions: any) => {
+        return previousTransactions !== null ? [...previousTransactions, data] : data
+      })
     },
     [fetchWithCache]
   )

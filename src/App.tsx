@@ -24,9 +24,9 @@ export function App() {
     transactionsByEmployeeUtils.invalidateData()
 
     await employeeUtils.fetchAll()
+    setIsLoading(false)
     await paginatedTransactionsUtils.fetchAll()
 
-    setIsLoading(false)
   }, [employeeUtils, paginatedTransactionsUtils, transactionsByEmployeeUtils])
 
   const loadTransactionsByEmployee = useCallback(
@@ -44,12 +44,12 @@ export function App() {
   }, [employeeUtils.loading, employees, loadAllTransactions])
 
   const handleFilter = async (newValue: any) => {
-    console.log({newValue});
+    console.log({ newValue });
     if (!newValue.id) {
       await loadAllTransactions()
       return
     }
-    
+
     await loadTransactionsByEmployee(newValue.id)
   }
 
@@ -81,7 +81,7 @@ export function App() {
           {transactions !== null && (
             <button
               className="RampButton"
-              disabled={paginatedTransactionsUtils.loading}
+              disabled={paginatedTransactionsUtils.loading || paginatedTransactions?.nextPage == null || transactionsByEmployee?.length === 0}
               onClick={async () => {
                 await loadAllTransactions()
               }}
